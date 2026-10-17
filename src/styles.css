@@ -57,7 +57,7 @@
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Nunito Sans", system-ui, sans-serif;
   --font-hand: "Caveat", cursive;
-  --shadow-soft: var(--shadow-soft);
+  --shadow-soft: 0 18px 40px -22px oklch(0.28 0.03 55 / 0.35);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -105,7 +105,6 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
-  --shadow-soft: 0 18px 40px -22px color-mix(in oklab, var(--foreground) 35%, transparent);
   --hero-veil: linear-gradient(90deg, color-mix(in oklab, var(--background) 88%, transparent) 0%, color-mix(in oklab, var(--background) 55%, transparent) 50%, transparent 80%);
 }
 
