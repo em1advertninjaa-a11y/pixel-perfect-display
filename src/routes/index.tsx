@@ -155,7 +155,7 @@ function Index() {
           ))}
         </div>
         <div key={cat} className="fade-up grid gap-x-12 gap-y-6 md:grid-cols-2">
-          {menu[cat].map((i) => (
+          {(menu[cat] ?? []).map((i) => (
             <div key={i.name} className="flex gap-4 border-b border-dashed pb-5">
               <span aria-label={i.veg ? "Vegetarian" : "Non-vegetarian"} title={i.veg ? "Vegetarian" : "Non-vegetarian"}
                 className={`mt-1.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border-2 ${i.veg ? "border-primary" : "border-destructive"}`}>
