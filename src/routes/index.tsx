@@ -440,13 +440,13 @@ function Index() {
             <div className="mt-4 flex gap-2">
               {[[Instagram, "https://instagram.com", "Instagram"], [Facebook, "https://facebook.com", "Facebook"], [Twitter, "https://x.com", "X"]].map(([S, h, l]) => {
                 const I = S as typeof Instagram;
-                return <a key={l as string} href={h as string} target="_blank" rel="noreferrer" aria-label={l as string} className="rounded-full border border-forest-foreground/30 p-2 hover:text-gold"><I className="h-4 w-4" /></a>;
+                return <a key={l as string} href={h as string} target="_blank" rel="noreferrer" aria-label={l as string} className="rounded-full border border-forest-foreground/30 p-2 transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:text-gold"><I className="h-4 w-4" /></a>;
               })}
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold">Quick Links</h3>
-            <ul className="mt-3 space-y-1.5 text-sm">{NAV.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="opacity-80 hover:text-gold hover:opacity-100">{n}</a></li>)}</ul>
+            <ul className="mt-3 space-y-1.5 text-sm">{NAV.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="link-underline opacity-80 transition-opacity hover:text-gold hover:opacity-100">{n}</a></li>)}</ul>
           </div>
           <div>
             <h3 className="text-lg font-semibold">Visit</h3>
@@ -477,8 +477,8 @@ function Index() {
 
       {/* FLOATING */}
       <div className="fixed bottom-5 right-5 z-40 flex flex-col gap-3">
-        <a href={`https://wa.me/${MAIN_WHATSAPP}`} target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp" className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft transition hover:scale-105"><MessageCircle /></a>
-        <a href={`tel:${MAIN_PHONE}`} aria-label="Call CHEF 11" className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-soft transition hover:scale-105"><Phone /></a>
+        <a href={`https://wa.me/${MAIN_WHATSAPP}`} target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp" className="pulse-ring flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-soft transition-transform duration-300 hover:scale-110"><MessageCircle /></a>
+        <a href={`tel:${MAIN_PHONE}`} aria-label="Call CHEF 11" className="pulse-ring flex h-14 w-14 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-soft transition-transform duration-300 hover:scale-110"><Phone /></a>
       </div>
     </div>
   );
