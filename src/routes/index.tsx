@@ -290,15 +290,15 @@ function Index() {
         <div className="mx-auto max-w-5xl">
           <Heading hand="Our team" title="Meet Our Chefs" />
           <div className="grid gap-8 sm:grid-cols-3">
-            {chefList.map((c) => (
-              <div key={c.name} className="text-center">
-                <img src={images.chefs} alt={`${c.name}, ${c.role}`} loading="lazy" style={{ objectPosition: c.pos }} className="mx-auto aspect-[3/4] w-full max-w-xs rounded-t-full rounded-b-3xl object-cover shadow-soft" />
-                <h3 className="mt-5 text-xl font-semibold">{c.name}</h3>
+            {chefList.map((c, i) => (
+              <Reveal key={c.name} delay={i * 150} className="group text-center">
+                <img src={images.chefs} alt={`${c.name}, ${c.role}`} loading="lazy" style={{ objectPosition: c.pos }} className="mx-auto aspect-[3/4] w-full max-w-xs rounded-t-full rounded-b-3xl object-cover shadow-soft transition-transform duration-700 group-hover:scale-[1.04]" />
+                <h3 className="mt-5 text-xl font-semibold transition-colors group-hover:text-caramel">{c.name}</h3>
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">{c.role}</p>
                 <div className="mt-3 flex justify-center gap-2">
-                  {[Instagram, Facebook, Twitter].map((S, k) => <a key={k} href="https://instagram.com" target="_blank" rel="noreferrer" aria-label={`${c.name} social profile`} className="rounded-full bg-card p-2 hover:text-caramel"><S className="h-3.5 w-3.5" /></a>)}
+                  {[Instagram, Facebook, Twitter].map((S, k) => <a key={k} href="https://instagram.com" target="_blank" rel="noreferrer" aria-label={`${c.name} social profile`} className="rounded-full bg-card p-2 transition-all duration-300 hover:-translate-y-1 hover:bg-caramel hover:text-accent-foreground"><S className="h-3.5 w-3.5" /></a>)}
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -307,20 +307,22 @@ function Index() {
       {/* OFFER */}
       <section className="bg-forest px-5 py-16 text-forest-foreground">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-8 text-center md:flex-row md:text-left">
-          <div>
+          <Reveal>
             <p className="font-hand text-2xl text-gold">Limited offer</p>
             <h2 className="text-3xl font-semibold md:text-4xl">25% off every weekday brunch, 8 AM to 11 AM</h2>
             <p className="mt-2 text-sm opacity-85">Mention this offer at the counter. Valid at all branches.</p>
             <a href="#branches" className={`${btn} mt-5 bg-gold text-foreground hover:bg-gold/90`}>Claim the offer</a>
-          </div>
-          <div className="flex gap-3" aria-label="Time left until offer ends">
-            {cd.map((v, i) => (
-              <div key={i} className="flex h-16 w-16 flex-col items-center justify-center rounded-full border border-forest-foreground/40">
-                <span className="font-serif text-xl font-semibold">{String(v).padStart(2, "0")}</span>
-                <span className="text-[9px] uppercase tracking-wider opacity-80">{["Days", "Hrs", "Min", "Sec"][i]}</span>
-              </div>
-            ))}
-          </div>
+          </Reveal>
+          <Reveal delay={200} className="flex gap-3" >
+            <div className="flex gap-3" aria-label="Time left until offer ends">
+              {cd.map((v, i) => (
+                <div key={i} className="float-soft flex h-16 w-16 flex-col items-center justify-center rounded-full border border-forest-foreground/40" style={{ animationDelay: `${i * 0.4}s` }}>
+                  <span className="font-serif text-xl font-semibold">{String(v).padStart(2, "0")}</span>
+                  <span className="text-[9px] uppercase tracking-wider opacity-80">{["Days", "Hrs", "Min", "Sec"][i]}</span>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
