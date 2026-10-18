@@ -404,7 +404,7 @@ function Index() {
                 <button type="submit" className={`${btnAccent} sm:col-span-2`}>Send Enquiry</button>
               </form>
             )}
-          </div>
+          </Reveal>
         </div>
       </section>
       <div className="text-sand"><Wave className="" flip /></div>
@@ -413,16 +413,20 @@ function Index() {
       <Section>
         <Heading hand="Journal" title="Latest From Chef 11" />
         <div className="grid gap-6 md:grid-cols-3">
-          {journal.map((j) => (
-            <article key={j.title} className="overflow-hidden rounded-3xl bg-card shadow-soft">
-              <img src={j.img} alt={j.title} loading="lazy" className="aspect-[4/3] w-full object-cover" />
-              <div className="p-6">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-olive">{j.date}</p>
-                <h3 className="mt-2 text-xl font-semibold">{j.title}</h3>
-                <p className="mt-2 text-xs text-muted-foreground">{j.excerpt}</p>
-                <a href="#home" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent">Read more <ArrowUpRight className="h-3 w-3" /></a>
-              </div>
-            </article>
+          {journal.map((j, i) => (
+            <Reveal key={j.title} delay={i * 120}>
+              <article className="card-hover group h-full overflow-hidden rounded-3xl bg-card shadow-soft">
+                <div className="overflow-hidden">
+                  <img src={j.img} alt={j.title} loading="lazy" className="img-zoom aspect-[4/3] w-full object-cover" />
+                </div>
+                <div className="p-6">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-olive">{j.date}</p>
+                  <h3 className="mt-2 text-xl font-semibold transition-colors group-hover:text-caramel">{j.title}</h3>
+                  <p className="mt-2 text-xs text-muted-foreground">{j.excerpt}</p>
+                  <a href="#home" className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-accent transition-all group-hover:gap-2">Read more <ArrowUpRight className="h-3 w-3" /></a>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </Section>
