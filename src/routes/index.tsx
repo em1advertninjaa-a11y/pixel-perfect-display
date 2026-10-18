@@ -251,12 +251,14 @@ function Index() {
           {([[Leaf, "Fresh Ingredients", "Organic produce from local farms, delivered daily."],
             [ChefHat, "Expert Chefs", "A passionate team with decades of combined craft."],
             [Sofa, "Cozy Ambience", "Sunlight, greenery and seats you'll never want to leave."],
-            [Zap, "Quick Service", "Freshly made, warmly served — without the wait."]] as const).map(([I, t, d]) => (
-            <div key={t} className="rounded-3xl bg-sand p-7 text-center">
-              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-card text-caramel"><I className="h-5 w-5" /></span>
-              <h3 className="mt-4 text-xl font-semibold">{t}</h3>
-              <p className="mt-2 text-xs text-muted-foreground">{d}</p>
-            </div>
+            [Zap, "Quick Service", "Freshly made, warmly served — without the wait."]] as const).map(([I, t, d], i) => (
+            <Reveal key={t} delay={i * 120}>
+              <div className="card-hover group h-full rounded-3xl bg-sand p-7 text-center">
+                <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-card text-caramel transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110"><I className="h-5 w-5" /></span>
+                <h3 className="mt-4 text-xl font-semibold">{t}</h3>
+                <p className="mt-2 text-xs text-muted-foreground">{d}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -266,10 +268,12 @@ function Index() {
         <Heading hand="Gallery" title="A Look Inside Chef 11" />
         <div className="grid auto-rows-[160px] grid-cols-2 gap-3 md:auto-rows-[200px] md:grid-cols-3">
           {gallery.slice(0, 7).map((g, i) => (
-            <button key={i} onClick={() => setLightbox(i)} aria-label={`Open photo ${i + 1}`}
-              className={`overflow-hidden rounded-2xl shadow-soft ${i === 0 ? "row-span-2" : ""} ${i === 5 ? "row-span-2" : ""}`}>
-              <img src={g} alt={`CHEF 11 café photo ${i + 1}`} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 hover:scale-105" />
-            </button>
+            <Reveal key={i} delay={i * 80} className={`${i === 0 ? "row-span-2" : ""} ${i === 5 ? "row-span-2" : ""}`}>
+              <button onClick={() => setLightbox(i)} aria-label={`Open photo ${i + 1}`}
+                className="group h-full w-full overflow-hidden rounded-2xl shadow-soft">
+                <img src={g} alt={`CHEF 11 café photo ${i + 1}`} loading="lazy" className="img-zoom h-full w-full object-cover" />
+              </button>
+            </Reveal>
           ))}
         </div>
       </Section>
