@@ -329,7 +329,7 @@ function Index() {
       {/* REVIEWS */}
       <Section>
         <Heading hand="Testimonials" title="What Our Guests Say" />
-        <figure className="mx-auto max-w-2xl rounded-3xl bg-card p-10 text-center shadow-soft">
+        <figure className="card-hover mx-auto max-w-2xl rounded-3xl bg-card p-10 text-center shadow-soft">
           <blockquote key={rev} className="fade-up font-serif text-2xl leading-snug">“{r.text}”</blockquote>
           <div className="mt-5 flex justify-center gap-1 text-gold" aria-label={`${r.stars} out of 5 stars`}>
             {Array.from({ length: 5 }).map((_, i) => <Star key={i} className={`h-4 w-4 ${i < r.stars ? "fill-current" : "opacity-30"}`} />)}
@@ -347,22 +347,24 @@ function Index() {
       <Section id="branches" className="pt-0">
         <Heading hand="Find us" title="Our Branches" sub="Two calm corners in Maharashtra. Contact details will be updated soon." />
         <div className="grid gap-6 md:grid-cols-2">
-          {branches.map((b) => (
-            <div key={b.city} className="rounded-3xl bg-sand p-7 shadow-soft">
-              <div className="flex items-start justify-between">
-                <h3 className="text-2xl font-semibold">Chef 11 · {b.city}</h3>
-                <a href={`tel:${b.phone}`} aria-label={`Call ${b.city}`} className="rounded-full bg-forest p-2 text-forest-foreground"><ArrowUpRight className="h-4 w-4" /></a>
+          {branches.map((b, i) => (
+            <Reveal key={b.city} delay={i * 150}>
+              <div className="card-hover group h-full rounded-3xl bg-sand p-7 shadow-soft">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-2xl font-semibold">Chef 11 · {b.city}</h3>
+                  <a href={`tel:${b.phone}`} aria-label={`Call ${b.city}`} className="rounded-full bg-forest p-2 text-forest-foreground transition-transform duration-500 group-hover:rotate-45"><ArrowUpRight className="h-4 w-4" /></a>
+                </div>
+                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                  <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-primary" />{b.address}</li>
+                  <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-primary" />Phone to be updated</li>
+                  <li className="flex gap-2"><Clock className="h-4 w-4 shrink-0 text-primary" />{b.hours}</li>
+                </ul>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a href={`tel:${b.phone}`} className={`${btnAccent} px-5 py-2`}><Phone className="h-4 w-4" />Call</a>
+                  <a href={`https://wa.me/${b.whatsapp}`} target="_blank" rel="noreferrer" className={`${btnOutline} px-5 py-2`}><MessageCircle className="h-4 w-4" />WhatsApp</a>
+                </div>
               </div>
-              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-primary" />{b.address}</li>
-                <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-primary" />Phone to be updated</li>
-                <li className="flex gap-2"><Clock className="h-4 w-4 shrink-0 text-primary" />{b.hours}</li>
-              </ul>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href={`tel:${b.phone}`} className={`${btnAccent} px-5 py-2`}><Phone className="h-4 w-4" />Call</a>
-                <a href={`https://wa.me/${b.whatsapp}`} target="_blank" rel="noreferrer" className={`${btnOutline} px-5 py-2`}><MessageCircle className="h-4 w-4" />WhatsApp</a>
-              </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Section>
