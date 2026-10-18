@@ -373,8 +373,10 @@ function Index() {
       <div className="text-sand"><Wave className="" /></div>
       <section id="franchise" className="bg-sand px-5 py-16">
         <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
-          <img src={images.hero} alt="CHEF 11 café" loading="lazy" className="aspect-[4/3] w-full rounded-3xl object-cover shadow-soft" />
-          <div>
+          <Reveal>
+            <img src={images.hero} alt="CHEF 11 café" loading="lazy" className="aspect-[4/3] w-full rounded-3xl object-cover shadow-soft transition-transform duration-700 hover:scale-[1.02]" />
+          </Reveal>
+          <Reveal delay={150}>
             <p className="font-hand text-2xl text-caramel">Partner with us</p>
             <h2 className="text-4xl font-semibold">Franchise Enquiry</h2>
             <p className="mt-2 text-sm text-muted-foreground">Bring the calm of CHEF 11 to your city. Share your details and our team will reach out.</p>
