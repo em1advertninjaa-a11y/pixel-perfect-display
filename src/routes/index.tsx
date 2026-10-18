@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent, type ReactNode } from "react";
 import {
   Menu as MenuIcon, X, Phone, MessageCircle, Clock, Leaf, ChefHat, Sofa, Zap, Star, MapPin,
   Instagram, Facebook, Mail, CheckCircle2, ChevronLeft, ChevronRight, ArrowUpRight, Twitter,
@@ -37,10 +37,32 @@ function Section({ id, children, className = "" }: { id?: string; children: Reac
 }
 function Heading({ hand, title, sub }: { hand: string; title: string; sub?: string }) {
   return (
-    <div className="mb-12 text-center">
+    <Reveal className="mb-12 text-center">
       <p className="font-hand text-2xl text-caramel">{hand}</p>
       <h2 className="mt-1 text-4xl font-semibold md:text-5xl">{title}</h2>
       {sub && <p className="mx-auto mt-3 max-w-xl text-sm text-muted-foreground">{sub}</p>}
+    </Reveal>
+  );
+}
+
+/** Fades children up when they scroll into view. `delay` staggers the entrance (ms). */
+function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => { if (e?.isIntersecting) { setShown(true); io.disconnect(); } },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
+      className={`reveal ${shown ? "reveal-visible" : ""} ${className}`}>
+      {children}
     </div>
   );
 }
