@@ -160,7 +160,83 @@ h1, h2, h3, h4 { font-family: var(--font-serif); }
 @utility hero-veil { background: var(--hero-veil); }
 @utility fade-up { animation: fadeUp 0.9s ease both; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; } }
+
+/* Scroll reveal: elements start hidden, .reveal-visible fades them up */
+@utility reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+@utility reveal-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Elegant card hover: gentle lift + deeper shadow */
+@utility card-hover {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 50px -22px oklch(0.28 0.03 55 / 0.45);
+  }
+}
+
+/* Animated underline for links */
+@utility link-underline {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* Slow zoom for images inside a .group hover */
+@utility img-zoom {
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  .group:hover & {
+    transform: scale(1.08);
+  }
+}
+
+/* Gentle floating motion (badges, countdown) */
+@utility float-soft { animation: floatSoft 5s ease-in-out infinite; }
+@keyframes floatSoft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* Soft pulsing ring for floating contact buttons */
+@utility pulse-ring {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: inherit;
+    opacity: 0.45;
+    animation: pulseRing 2.6s ease-out infinite;
+    z-index: -1;
+  }
+}
+@keyframes pulseRing { 0% { transform: scale(1); opacity: 0.45; } 70% { transform: scale(1.55); opacity: 0; } 100% { transform: scale(1.55); opacity: 0; } }
+
+/* Slow ken-burns drift for the hero photo */
+@utility ken-burns { animation: kenBurns 22s ease-in-out infinite alternate; }
+@keyframes kenBurns { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } .reveal { opacity: 1; transform: none; } }
 :root { --sand: oklch(0.9 0.03 80); --forest: oklch(0.33 0.05 150); --forest-foreground: oklch(0.96 0.02 85); --hero-dark: linear-gradient(180deg, oklch(0.2 0.03 60 / 0.55), oklch(0.2 0.03 60 / 0.35) 60%, oklch(0.2 0.03 60 / 0.5)); }
 @theme inline { --color-sand: var(--sand); --color-forest: var(--forest); --color-forest-foreground: var(--forest-foreground); }
 @utility hero-dark { background: var(--hero-dark); }
