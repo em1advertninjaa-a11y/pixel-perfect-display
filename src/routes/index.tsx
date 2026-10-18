@@ -192,18 +192,20 @@ function Index() {
       <Section>
         <Heading hand="Chef recommends" title="Signature Specials" sub="Our most-loved plates and cups, made fresh every day." />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {specials.map((s) => (
-            <article key={s.name} className="group overflow-hidden rounded-3xl bg-card shadow-soft">
-              <div className="relative overflow-hidden">
-                <img src={s.img} alt={s.name} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <span className="absolute right-3 top-3 rounded-full bg-card p-1.5"><Leaf className="h-3.5 w-3.5 text-primary" /></span>
-              </div>
-              <div className="p-5">
-                <h3 className="text-xl font-semibold">{s.name}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{s.desc}</p>
-                <p className="mt-3 font-bold text-accent">{rupee(s.price)}</p>
-              </div>
-            </article>
+          {specials.map((s, i) => (
+            <Reveal key={s.name} delay={i * 120}>
+              <article className="card-hover group h-full overflow-hidden rounded-3xl bg-card shadow-soft">
+                <div className="relative overflow-hidden">
+                  <img src={s.img} alt={s.name} loading="lazy" className="img-zoom aspect-[4/3] w-full object-cover" />
+                  <span className="absolute right-3 top-3 rounded-full bg-card p-1.5 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110"><Leaf className="h-3.5 w-3.5 text-primary" /></span>
+                </div>
+                <div className="p-5">
+                  <h3 className="text-xl font-semibold transition-colors group-hover:text-caramel">{s.name}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">{s.desc}</p>
+                  <p className="mt-3 font-bold text-accent">{rupee(s.price)}</p>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
       </Section>
@@ -221,8 +223,8 @@ function Index() {
           </div>
           <div key={cat} className="fade-up grid gap-x-12 gap-y-5 md:grid-cols-2">
             {(menu[cat] ?? []).map((i, idx) => (
-              <div key={i.name} className="flex items-center gap-4">
-                <img src={specials[idx % specials.length]!.img} alt="" loading="lazy" className="h-14 w-14 shrink-0 rounded-full object-cover shadow-soft" />
+              <div key={i.name} className="flex items-center gap-4 rounded-2xl p-2 transition-colors duration-300 hover:bg-card/70">
+                <img src={specials[idx % specials.length]!.img} alt="" loading="lazy" className="h-14 w-14 shrink-0 rounded-full object-cover shadow-soft transition-transform duration-500 hover:scale-110" />
                 <div className="flex-1">
                   <div className="flex items-baseline gap-2">
                     <span aria-label={i.veg ? "Vegetarian" : "Non-vegetarian"} title={i.veg ? "Vegetarian" : "Non-vegetarian"}
