@@ -143,18 +143,18 @@ function Index() {
 
       {/* HERO */}
       <section id="home" className="relative flex min-h-[88vh] items-center overflow-hidden">
-        <img src={images.hero} alt="CHEF 11 café interior with plants and warm lighting" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover" />
+        <img src={images.hero} alt="CHEF 11 café interior with plants and warm lighting" width={1920} height={1088} className="ken-burns absolute inset-0 h-full w-full object-cover" />
         <div className="hero-dark absolute inset-0" />
-        <div className="fade-up relative mx-auto w-full max-w-6xl px-5 pb-24 pt-28 text-forest-foreground">
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-24 pt-28 text-forest-foreground">
           <div className="max-w-xl">
-            <p className="font-hand text-2xl text-gold">Where every cup feels like home</p>
-            <h1 className="mt-2 text-5xl font-semibold leading-[1.05] md:text-6xl">Crafted Flavours in a Calm, Natural Space</h1>
-            <p className="mt-4 max-w-md text-sm opacity-90">Organic coffee, slow brunches and fresh-baked comfort — served in a sunlit space full of greenery.</p>
-            <div className="mt-7 flex flex-wrap gap-3">
+            <p className="fade-up font-hand text-2xl text-gold">Where every cup feels like home</p>
+            <h1 className="fade-up mt-2 text-5xl font-semibold leading-[1.05] md:text-6xl" style={{ animationDelay: "0.15s" }}>Crafted Flavours in a Calm, Natural Space</h1>
+            <p className="fade-up mt-4 max-w-md text-sm opacity-90" style={{ animationDelay: "0.3s" }}>Organic coffee, slow brunches and fresh-baked comfort — served in a sunlit space full of greenery.</p>
+            <div className="fade-up mt-7 flex flex-wrap gap-3" style={{ animationDelay: "0.45s" }}>
               <a href="#menu" className={btnAccent}>View Menu</a>
               <a href="#franchise" className={btnGhostLight}>Franchise Enquiry</a>
             </div>
-            <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-card px-5 py-2.5 text-foreground shadow-soft">
+            <div className="fade-up mt-8 inline-flex items-center gap-3 rounded-full bg-card px-5 py-2.5 text-foreground shadow-soft" style={{ animationDelay: "0.6s" }}>
               <Clock className="h-4 w-4 text-primary" />
               <div className="leading-tight"><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Open daily</p><p className="text-sm font-bold">8 AM – 11 PM</p></div>
             </div>
@@ -166,15 +166,15 @@ function Index() {
       {/* ABOUT */}
       <Section id="about">
         <div className="grid items-center gap-12 md:grid-cols-2">
-          <div className="relative grid grid-cols-2 items-end gap-4">
-            <img src={images.hero} alt="Dining area at CHEF 11" loading="lazy" className="aspect-[3/4] w-full rounded-t-full rounded-b-3xl object-cover shadow-soft" />
-            <img src={images.interior} alt="Coffee counter at CHEF 11" loading="lazy" className="aspect-[3/5] w-full rounded-t-full rounded-b-3xl object-cover shadow-soft" />
-            <div className="absolute -bottom-6 right-4 rounded-2xl bg-forest p-4 text-forest-foreground shadow-soft">
+          <Reveal className="relative grid grid-cols-2 items-end gap-4">
+            <img src={images.hero} alt="Dining area at CHEF 11" loading="lazy" className="aspect-[3/4] w-full rounded-t-full rounded-b-3xl object-cover shadow-soft transition-transform duration-700 hover:scale-[1.03]" />
+            <img src={images.interior} alt="Coffee counter at CHEF 11" loading="lazy" className="aspect-[3/5] w-full rounded-t-full rounded-b-3xl object-cover shadow-soft transition-transform duration-700 hover:scale-[1.03]" />
+            <div className="float-soft absolute -bottom-6 right-4 rounded-2xl bg-forest p-4 text-forest-foreground shadow-soft">
               <p className="font-hand text-2xl text-gold">Since 2015</p>
               <p className="text-xs opacity-90">Serving Maharashtra with love</p>
             </div>
-          </div>
-          <div>
+          </Reveal>
+          <Reveal delay={150}>
             <p className="font-hand text-2xl text-caramel">Our story</p>
             <h2 className="mt-1 text-4xl font-semibold md:text-[2.6rem] md:leading-tight">A café shaped like a sand dune, run like a family kitchen</h2>
             <p className="mt-6 text-sm leading-relaxed text-muted-foreground">CHEF 11 began with a simple idea — honest, organic food served in a space that lets you breathe. We source from local farms, roast our coffee with care and cook everything fresh, every day.</p>
@@ -184,7 +184,7 @@ function Index() {
                 <div key={l}><p className="font-serif text-4xl font-semibold text-primary">{n}</p><p className="mt-1 text-[11px] uppercase tracking-wider text-muted-foreground">{l}</p></div>
               ))}
             </div>
-          </div>
+          </Reveal>
         </div>
       </Section>
 
