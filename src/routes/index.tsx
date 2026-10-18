@@ -60,7 +60,7 @@ function Reveal({ children, className = "", delay = 0 }: { children: ReactNode; 
     return () => io.disconnect();
   }, []);
   return (
-    <div ref={ref} style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
+    <div ref={ref} style={{ "--reveal-delay": `${delay}ms` } as CSSProperties}
       className={`reveal ${shown ? "reveal-visible" : ""} ${className}`}>
       {children}
     </div>
@@ -128,7 +128,7 @@ function Index() {
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4" aria-label="Main">
           <a href="#home" className="font-serif text-2xl font-bold tracking-[0.2em]">CHEF <span className="text-caramel">11</span></a>
           <ul className="hidden items-center gap-6 lg:flex">
-            {NAV.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="text-sm font-semibold hover:text-caramel">{n}</a></li>)}
+            {NAV.map((n) => <li key={n}><a href={`#${n.toLowerCase()}`} className="link-underline text-sm font-semibold transition-colors hover:text-caramel">{n}</a></li>)}
           </ul>
           <a href="#franchise" className={`${btnAccent} hidden lg:inline-flex`}>Franchise Enquiry</a>
           <button className="lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <MenuIcon />}</button>
