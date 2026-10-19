@@ -28,28 +28,40 @@ jobs:
       - name: Build website
         run: bun run build
 
+      - name: Inspect build output
+        shell: bash
+        run: |
+          echo "=== Project files ==="
+          ls -la
+          echo "=== Vite configuration ==="
+          cat vite.config.ts
+          echo "=== HTML files outside dependencies ==="
+          find . \
+            -path './node_modules' -prune -o \
+            -path './.git' -prune -o \
+            -type f -name index.html -print
+          echo "=== Standard build folders ==="
+          for dir in dist build out .output/public; do
+            if [ -d "$dir" ]; then
+              echo "Found folder: $dir"
+              ls -la "$dir"
+            fi
+          done
+
       - name: Locate website files
         id: locate
         shell: bash
         run: |
-          echo "=== Root files ==="
-          ls -la
-          echo "=== Package build script ==="
-          bun -e 'console.log(JSON.stringify(require("./package.json").scripts, null, 2))'
-
           for dir in dist .output/public build out; do
             if [ -f "$dir/index.html" ]; then
-              echo "Found website in: $dir"
               echo "local_dir=$dir/" >> "$GITHUB_OUTPUT"
+              echo "Website found in $dir"
               exit 0
             fi
           done
 
-          echo "ERROR: No website index.html found in expected build folders."
-          echo "Checking other locations:"
-          find . -path './node_modules' -prune -o \
-            -path './.git' -prune -o \
-            -type f -name index.html -print
+          echo "No built index.html found."
+          echo "Check the Inspect build output logs."
           exit 1
 
       - name: Deploy to FastComet using FTPS
