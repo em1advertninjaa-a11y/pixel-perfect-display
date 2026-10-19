@@ -28,15 +28,29 @@ jobs:
       - name: Build website
         run: bun run build
 
-      - name: Find build output
+      - name: Locate website files
+        id: locate
+        shell: bash
         run: |
-          echo "=== Project root ==="
-          pwd
+          echo "=== Root files ==="
           ls -la
-          echo "=== Build directories ==="
-          find . -maxdepth 4 -type d \( -name dist -o -name build \) -print
-          echo "=== HTML entry files ==="
-          find . -maxdepth 4 -type f -name index.html -print
+          echo "=== Package build script ==="
+          bun -e 'console.log(JSON.stringify(require("./package.json").scripts, null, 2))'
+
+          for dir in dist .output/public build out; do
+            if [ -f "$dir/index.html" ]; then
+              echo "Found website in: $dir"
+              echo "local_dir=$dir/" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+
+          echo "ERROR: No website index.html found in expected build folders."
+          echo "Checking other locations:"
+          find . -path './node_modules' -prune -o \
+            -path './.git' -prune -o \
+            -type f -name index.html -print
+          exit 1
 
       - name: Deploy to FastComet using FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -46,5 +60,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
-          local-dir: dist/
+          local-dir: ${{ steps.locate.outputs.local_dir }}
           server-dir: /
