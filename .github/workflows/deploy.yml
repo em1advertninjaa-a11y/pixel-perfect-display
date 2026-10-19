@@ -28,6 +28,16 @@ jobs:
       - name: Build website
         run: bun run build
 
+      - name: Find build output
+        run: |
+          echo "=== Project root ==="
+          pwd
+          ls -la
+          echo "=== Build directories ==="
+          find . -maxdepth 4 -type d \( -name dist -o -name build \) -print
+          echo "=== HTML entry files ==="
+          find . -maxdepth 4 -type f -name index.html -print
+
       - name: Deploy to FastComet using FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
