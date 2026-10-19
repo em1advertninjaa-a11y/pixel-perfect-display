@@ -19,16 +19,14 @@ jobs:
       - name: Get website source
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: npm install
+        run: bun install --frozen-lockfile
 
       - name: Build website
-        run: npm run build
+        run: bun run build
 
       - name: Deploy to FastComet using FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
