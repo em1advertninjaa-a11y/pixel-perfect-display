@@ -37,8 +37,7 @@ jobs:
         run: |
           test -f .output/server/index.mjs
           test -d .output/public
-          cat .output/nitro.json
-          grep -q '"preset":"node-server"' .output/nitro.json
+          node -e "const n=require('./.output/nitro.json'); if(n.preset!=='node-server') process.exit(1); console.log('Node server build verified')"
 
       - name: Prepare SSH
         env:
@@ -49,8 +48,7 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keygen -p -P "$SSH_KEY_PASS" -N "" \
-            -f ~/.ssh/deploy_key
+          ssh-keygen -p -P "$SSH_KEY_PASS" -N "" -f ~/.ssh/deploy_key
           ssh-keygen -y -f ~/.ssh/deploy_key > ~/.ssh/deploy_key.pub
 
       - name: Test SSH connection
@@ -62,6 +60,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key \
             -p "${PORT:-22}" \
             -o StrictHostKeyChecking=accept-new \
+            -o ConnectTimeout=20 \
             "$USER@$HOST" "echo SSH connection successful"
 
       - name: Upload production build
