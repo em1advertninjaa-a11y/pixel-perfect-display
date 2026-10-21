@@ -31,38 +31,32 @@ jobs:
       - name: Inspect build output
         shell: bash
         run: |
-          echo "=== Project files ==="
+          echo "=== Project root ==="
+          pwd
           ls -la
+
           echo "=== Vite configuration ==="
           cat vite.config.ts
-          echo "=== HTML files outside dependencies ==="
-          find . \
-            -path './node_modules' -prune -o \
-            -path './.git' -prune -o \
-            -type f -name index.html -print
-          echo "=== Standard build folders ==="
-          for dir in dist build out .output/public; do
-            if [ -d "$dir" ]; then
-              echo "Found folder: $dir"
-              ls -la "$dir"
-            fi
-          done
 
-      - name: Locate website files
-        id: locate
-        shell: bash
+          echo "=== Public output ==="
+          ls -la .output/public 2>&1 || true
+
+          echo "=== Server output ==="
+          ls -la .output/server 2>&1 || true
+
+          echo "=== Server files ==="
+          find .output/server -maxdepth 3 -type f -print 2>&1 || true
+
+          echo "=== Package scripts ==="
+          bun -e 'console.log(JSON.stringify(require("./package.json").scripts, null, 2))'
+
+      - name: Check static website output
         run: |
-          for dir in dist .output/public build out; do
-            if [ -f "$dir/index.html" ]; then
-              echo "local_dir=$dir/" >> "$GITHUB_OUTPUT"
-              echo "Website found in $dir"
-              exit 0
-            fi
-          done
-
-          echo "No built index.html found."
-          echo "Check the Inspect build output logs."
-          exit 1
+          if [ ! -f .output/public/index.html ]; then
+            echo "No index.html found in .output/public."
+            echo "Inspect the logs before choosing a deployment method."
+            exit 1
+          fi
 
       - name: Deploy to FastComet using FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -72,5 +66,5 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: ${{ secrets.FTP_PORT }}
           protocol: ftps
-          local-dir: ${{ steps.locate.outputs.local_dir }}
+          local-dir: .output/public/
           server-dir: /
