@@ -12,4 +12,8 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Used ONLY by builds outside the Lovable sandbox (e.g. FastComet cPanel Node.js
+  // hosting). Sandbox builds force cloudflare-module, so Lovable preview/publish
+  // behavior is unchanged. Output: .output/server/index.mjs + .output/public/
+  nitro: { preset: "node-server" },
 });
