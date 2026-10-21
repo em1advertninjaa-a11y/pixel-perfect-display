@@ -1,5 +1,5 @@
 
-name: Build Chef11
+name: Build & Deploy Chef11
 
 on:
   push:
@@ -10,30 +10,88 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: chef11-deploy
+  cancel-in-progress: true
+
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get website source
+      - name: Checkout website
         uses: actions/checkout@v4
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Build website
         run: bun run build
         env:
           NITRO_PRESET: node-server
 
-      - name: Show build output
+      - name: Verify production build
         run: |
-          echo "=== Server entry ==="
-          ls -l .output/server/index.mjs
-          echo "=== Public files ==="
-          ls -la .output/public
-          echo "=== Nitro configuration ==="
+          test -f .output/server/index.mjs
+          test -d .output/public
           cat .output/nitro.json
+          grep -q '"preset":"node-server"' .output/nitro.json
+
+      - name: Prepare SSH
+        env:
+          SSH_KEY: ${{ secrets.FASTCOMET_SSH_KEY }}
+          SSH_KEY_PASS: ${{ secrets.FASTCOMET_SSH_KEY_PASS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keygen -p -P "$SSH_KEY_PASS" -N "" \
+            -f ~/.ssh/deploy_key
+          ssh-keygen -y -f ~/.ssh/deploy_key > ~/.ssh/deploy_key.pub
+
+      - name: Test SSH connection
+        env:
+          HOST: ${{ secrets.FASTCOMET_SSH_HOST }}
+          PORT: ${{ secrets.FASTCOMET_SSH_PORT }}
+          USER: ${{ secrets.FASTCOMET_SSH_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -p "${PORT:-22}" \
+            -o StrictHostKeyChecking=accept-new \
+            "$USER@$HOST" "echo SSH connection successful"
+
+      - name: Upload production build
+        env:
+          HOST: ${{ secrets.FASTCOMET_SSH_HOST }}
+          PORT: ${{ secrets.FASTCOMET_SSH_PORT }}
+          USER: ${{ secrets.FASTCOMET_SSH_USER }}
+          ROOT: ${{ secrets.FASTCOMET_APP_ROOT }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${PORT:-22} -o StrictHostKeyChecking=accept-new" \
+            .output/ "$USER@$HOST:$ROOT/.output/"
+
+          rsync -az \
+            -e "ssh -i ~/.ssh/deploy_key -p ${PORT:-22} -o StrictHostKeyChecking=accept-new" \
+            app.cjs "$USER@$HOST:$ROOT/app.cjs"
+
+      - name: Restart Node.js application
+        env:
+          HOST: ${{ secrets.FASTCOMET_SSH_HOST }}
+          PORT: ${{ secrets.FASTCOMET_SSH_PORT }}
+          USER: ${{ secrets.FASTCOMET_SSH_USER }}
+          ROOT: ${{ secrets.FASTCOMET_APP_ROOT }}
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -p "${PORT:-22}" \
+            -o StrictHostKeyChecking=accept-new \
+            "$USER@$HOST" \
+            "mkdir -p '$ROOT/tmp' && touch '$ROOT/tmp/restart.txt'"
+
+      - name: Clean up SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key ~/.ssh/deploy_key.pub
