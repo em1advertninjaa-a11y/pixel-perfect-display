@@ -26,6 +26,8 @@ jobs:
 
       - name: Build website
         run: bun run build
+        env:
+          NITRO_PRESET: node-server
 
       - name: Show build output
         run: |
