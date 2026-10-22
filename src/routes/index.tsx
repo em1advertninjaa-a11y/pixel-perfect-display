@@ -171,7 +171,7 @@ function Index() {
             <img src={images.interior} alt="Coffee counter at CHEF 11" loading="lazy" className="aspect-[3/5] w-full rounded-t-full rounded-b-3xl object-cover shadow-soft transition-transform duration-700 hover:scale-[1.03]" />
             <div className="float-soft absolute -bottom-6 right-4 rounded-2xl bg-forest p-4 text-forest-foreground shadow-soft">
               <p className="font-hand text-2xl text-gold">Since 2015</p>
-              <p className="text-xs opacity-90">Serving Maharashtra with love</p>
+              <p className="text-xs opacity-90">Serving Maharashtra With Love</p>
             </div>
           </Reveal>
           <Reveal delay={150}>
